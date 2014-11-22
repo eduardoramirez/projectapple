@@ -32,7 +32,9 @@
       </div>
     </div>
   </div>
+  <h3 style="text-align: center;">Items you can buy:</h3>
   <div class="want"></div>
+  <div class="ui secondary button" id="total">Total</div>
   <script src="script.js"></script>
   <script>
     var fb = new Firebase('https://spendwell.firebaseio.com');
@@ -73,7 +75,7 @@
 
     function display(list){
       var colOpen = '<div class="ui grid">';
-      var checkboxHeader = '<div class="five wide column">'
+      var checkboxHeader = '<div class="seven wide column">'
                           +'<label><input class="ui huge checkbox" type="checkbox" id="'
 
       var checkboxOpen = '">';
@@ -81,11 +83,12 @@
       var checkboxClose = '</label>'
                         +'</div>';
       var colClose = '</div>';
-      var innerColOpen = '<div class="one wide column">';
+      var innerColOpen = '<div class="one short column">';
       var innerColClose = '</div>';
+      var label = '<span class="ui teal circular label">want</span>&nbsp;&nbsp;&nbsp;';
       for(var key in list){
-        var toInsert = colOpen + checkboxHeader + key + checkboxOpen + '<span class="spacetab">'+ key + '</span>' +
-        checkboxClose + innerColOpen + list[key] + innerColClose + colClose;
+        var toInsert = colOpen + checkboxHeader + key + checkboxOpen + '<span class="spacetab">'+ label + key+ '</span>' +
+        checkboxClose + innerColOpen + "$"+list[key].toFixed(2).toString() + innerColClose + colClose;
         $('.want').append(toInsert);
       }
     };
@@ -93,6 +96,7 @@
     display(want);
 
     function addTotal(list){
+      var total = 0;
       for(var key in list){
         if($('#'+key).is(":checked")) {
           total += list[key];
@@ -101,7 +105,10 @@
       return total;
     };
 
-
+    $("#total").click(function(){
+      alert(want.length);
+      alert(addTotal(want));
+    });
   </script>
 </body>
 </html>

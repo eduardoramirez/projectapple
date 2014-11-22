@@ -43,7 +43,12 @@ body {
 
 .given {
 	margin-top: 15px;
+}
 
+.want {
+	margin-left: 25%;
+	margin-right: -25%;
+	width: 90%;
 }
 
 .sep {
