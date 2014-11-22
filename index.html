@@ -24,19 +24,15 @@
     <div class="stats">
       <div class="luxury">Luxury Point: <span id="luxury_pt"></span></div>
       <div class="given">
-      <a class="ui black label">Allowance</a><span id="allowance"></span>
-      <a class="ui black label">Time Period</a><span id="time"></span>
+        <a class="ui black label">Allowance</a><span id="allowance"></span>
+        <a class="ui black label">Time Period</a><span id="time"></span>
+      </div>
     </div>
   </div>
 
-
   <br>
-  <div class="ui button" id="utils">
-    Add want
-  </div>
 
-  <div class="ui right sidebar" id="utilsSidebar">
-
+  <div class="want">
   </div>
 
   <script src="script.js"></script>
@@ -47,29 +43,61 @@
     document.getElementById("luxury_pt").innerHTML = luxury_pt;
     document.getElementById("allowance").innerHTML = "$"+allowance.toFixed(2).toString();
     document.getElementById("time").innerHTML = times[((Math.random() * 3) + 1)%4];
+    
+    function display(list){
+
+      var colOpen = '<div class="ui grid">';
+
+      var checkboxHeader = '<div class="five wide column" id="';
+
+      var checkboxOpen = '">'
+                          +'<label><input class="ui huge checkbox right" type="checkbox">';
 
 
-    /*
-    $("#utils").click(function() {
-      $('#utilsSidebar').empty();
-      $('#utilsSidebar').append('<div class="header item">Necessities and Wants</div>');
-      addUtils();
-      $('#utilsSidebar').sidebar({
-        overlay: true
-      }).sidebar('toggle');
-    }); */
+      var checkboxClose = '</label>'
+                        +'</div>';
 
 
-    function addUtils() {
-      for(var i = 0; i < want.length; i++){
-        $('#utilsSidebar').append('<a class="item">' + want[i] + '</a>');
-      }
-      // some line
+      var colClose = '</div>';
 
-      for(var i = 0; i < need.length; i++){
-        $('#utilsSidebar').append('<a class="item">' + need[i] + '</a>');
+      var innerColOpen = '<div class="one wide column">';
+
+      var innerColClose = '</div>';
+
+      for(var key in list){
+        var toInsert = colOpen + checkboxHeader + key + checkboxOpen + '<span class="spacetab">'+ key + '</span>' + 
+        checkboxClose + innerColOpen + list[key] + innerColClose + colClose;
+
+        $('.want').append(toInsert);
       }
     };
+
+
+    function createRows2(){
+
+      var colOpen = '<div class="ui grid">';
+
+      var checkbox = '<div class="one wide column">'
+                          +'<input class="ui huge checkbox right" type="checkbox">'
+                          +'</label>'
+                    +'</div>';
+
+      var innerColOpen = '<div class="four wide column">';
+
+      var innerColClose = '</div>';
+
+
+      var colClose = '</div>';
+
+      for(var key in want){
+        var toInsert = colOpen + checkbox + innerColOpen + key + innerColClose
+        + innerColOpen + want[key] + innerColClose + colClose;
+
+        $(toInsert).insertAfter('.mainContent');
+      }
+    };
+
+    display(want);
 
   </script>
 </body>
