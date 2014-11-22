@@ -98,7 +98,7 @@
     function addTotal(list){
       var total = 0;
       for(var key in list){
-        if($('#'+key).is(":checked")) {
+        if($('#'+key).is(':checked')) {
           total += list[key];
         }
       }
@@ -106,7 +106,6 @@
     };
 
     $("#total").click(function(){
-      alert(want.length);
       alert(addTotal(want));
     });
   </script>

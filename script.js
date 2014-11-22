@@ -5,7 +5,7 @@ need = {
 "Utilities": 10.00
 };
 want = {
-"Music CDs": 16.00,
-"Game Console": 20.00,
+"CDs": 16.00,
+"Console": 20.00,
 "Laptop": 25.00
 };
