@@ -56,3 +56,13 @@ body {
 	margin-left: 10px;
 	margin-right: 9px;
 }
+
+#total {
+	margin-left: 25%;
+}
+
+#total_cost {
+	float: right;
+	margin-right: 30%;
+	font-size: 32px;
+}

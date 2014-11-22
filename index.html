@@ -34,12 +34,15 @@
   </div>
   <h3 style="text-align: center;">Items you can buy:</h3>
   <div class="want"></div>
-  <div class="ui secondary button" id="total">Total</div>
+  <div class="ui green button" id="total">Total</div>
+  <div class="ui disabled blue button" id="next">Another Round</div>
+  <div id="total_cost">$0.00</div>
   <script src="script.js"></script>
   <script>
     var fb = new Firebase('https://spendwell.firebaseio.com');
-
+    var data = [];
     var luxury_pt = 0;
+    var total_spent = 0;
     var allowance = (Math.random() * 1000) + 10;
     while(allowance > 1000){
       allowance = (Math.random() * 1000) + 10;
@@ -87,14 +90,14 @@
       var innerColClose = '</div>';
       var label = '<span class="ui teal circular label">want</span>&nbsp;&nbsp;&nbsp;';
       for(var key in list){
-        var toInsert = colOpen + checkboxHeader + key + checkboxOpen + '<span class="spacetab">'+ label + key+ '</span>' +
+        var toInsert = colOpen + checkboxHeader + key + checkboxOpen + '<span class="spacetab">'+ '<span class="ui blue circular label">want</span>&nbsp;&nbsp;&nbsp;' + key+ '</span>' +
         checkboxClose + innerColOpen + "$"+list[key].toFixed(2).toString() + innerColClose + colClose;
         $('.want').append(toInsert);
       }
 
       var label = '<span class="ui teal circular label">need</span>&nbsp;&nbsp;&nbsp;';
       for(var key in list2){
-        var toInsert = colOpen + checkboxHeader + key + checkboxOpen + '<span class="spacetab">'+ label + key+ '</span>' +
+        var toInsert = colOpen + checkboxHeader + key + checkboxOpen + '<span class="spacetab">'+ '<span class="ui orange circular label">need</span>&nbsp;&nbsp;&nbsp;' + key+ '</span>' +
         checkboxClose + innerColOpen + "$"+list2[key].toFixed(2).toString() + innerColClose + colClose;
         $('.want').append(toInsert);
       }
@@ -104,22 +107,33 @@
 
     function addTotal(list, list2){
       var total = 0;
+      var wants = 0;
+      var needs = 0;
       for(var key in list){
         if($('#'+key).is(':checked')) {
           total += list[key];
+          wants += 1;
         }
       }
 
       for(var key in list2){
         if($('#'+key).is(':checked')) {
           total += list2[key];
+          needs += 1;
         }
       }
-      return total;
+      return [total,wants,needs];
     };
 
     $("#total").click(function(){
-      alert(addTotal(want, need));
+      data = addTotal(want, need);
+      total_spent = data[0]
+      document.getElementById("total_cost").innerHTML = "$"+total_spent.toFixed(2).toString();
+      if(total_spent > 0){
+        $("#next").removeClass("disabled");
+      }
+      luxury_pt = (data[1]*-10)+(data[2]*7);
+      fb.push(luxury_pt);
     });
   </script>
 </body>
