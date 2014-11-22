@@ -1,4 +1,6 @@
 What we need to do:
 * Better way to word direction
-* hover help pop up thing
+* help pop up on finance words (e.g. when user hover over 'allowance' have a message box describing it)
 * random generator with javascript
+* being able to create a list of things to spend
+* way to go to next round while not resetting luxury point
