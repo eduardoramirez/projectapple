@@ -32,11 +32,11 @@ for a specified purpose. In this case, complete you task!">Allowance/Income:<spa
         <!--<span class="item hoverable" data-variation="inverted" data-content="The amount of time you are given to use allowance.">Time Period:<span class="ui black label" id="time"></span></span>-->
         <span class="item hoverable" data-variation="inverted" data-content="A government tax imposed on individuals. A key source of funds that the
 government uses to fund its activities and serve the public.">Income Tax:<span class="ui black label" id="tax"></span></span>
-        <span class="item hoverable" data-variation="inverted" data-content="Complete your tasks! Do well and you will earn Luxury Points.">Task (Optional):<span class="ui black label" id="task">Get additional 5 Luxury Point</span></span>
+        <span class="item hoverable" data-variation="inverted" data-content="Complete your tasks! Do well and you will earn Luxury Points.">Task:<span class="ui black label" id="task"></span></span>
       </div>
     </div>
   </div>
-  <h3 style="text-align: center;">Items you can buy:</h3>
+  <h3 style="text-align: center;">Items that you can buy:</h3>
   <div class="want"></div>
   <div class="ui green button hoverable" id="total" data-variation="inverted" data-content="Update Cart">&nbsp;&nbsp;&nbsp;<i class="cart icon"></i></div>
   <div class="ui disabled blue button hoverable" id="next" data-variation="inverted" data-content="Continue">&nbsp;&nbsp;&nbsp;<i class="play icon"></i></div>
@@ -52,6 +52,7 @@ government uses to fund its activities and serve the public.">Income Tax:<span c
   <script>
     var data = [];
     var luxury_pt = 0;
+    var optimal_lp = 0;
     var address = (window.location).toString();
     var n = address.indexOf('?');
     if(n != -1){
@@ -222,6 +223,17 @@ government uses to fund its activities and serve the public.">Income Tax:<span c
       return [total, wants, needs];
     };
 
+    function getOLP(list2){
+      var total_OLP = 0;
+      for(var key in list2){
+        total_OLP += 1
+      }
+
+      return (total_OLP*.8) - ((Math.random() * 5) + 0);
+    }
+    optimal_lp = getOLP(need);
+    document.getElementById("task").innerHTML = "Earn "+Math.floor(optimal_lp).toString()+" Luxury Point(s)";
+
     $("#total").click(function(){
       data = addTotal(want, need);
       total_spent = data[0]
@@ -232,6 +244,9 @@ government uses to fund its activities and serve the public.">Income Tax:<span c
         deduction = total_spent - allowance-(allowance*tax);
         alert("You are overspending. Please reconsider your choice.");
       }
+      else {
+        $("#total_cost").css('color','black');
+      }
       if(total_spent > 0){
         $("#next").removeClass("disabled");
       }
@@ -239,8 +254,18 @@ government uses to fund its activities and serve the public.">Income Tax:<span c
     });
 
     $('#next').click(function(){
+      data = addTotal(want, need);
+      total_spent = data[0];
+      var deduction = 0;
       if($(this).hasClass("disabled")){
         return false;
+      }
+      if(total_spent > allowance-(allowance*tax)){
+        deduction = total_spent - allowance-(allowance*tax);
+      }
+      if(optimal_lp > Math.floor(-(data[1]*.12)+(data[2]*.8)-(deduction/50))){
+        alert("You did not meet the given task. Please try again!");
+        luxury_pt -= optimal_lp;
       }
       if((window.location).toString().indexOf('?') == -1){
         window.location.href = window.location + "?pt=" + luxury_pt.toString();
@@ -256,7 +281,8 @@ government uses to fund its activities and serve the public.">Income Tax:<span c
         address = (window.location).toString().substring(0,address.indexOf('?'));
         window.location.href = address + "?pt=0";
       }
-    })
+    });
+
   </script>
 </body>
 </html>

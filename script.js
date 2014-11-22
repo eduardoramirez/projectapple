@@ -29,5 +29,4 @@ want = {
 "Shoes": 150.00,
 "Comics": 8.50,
 "Movies": 12.00
-
 };
