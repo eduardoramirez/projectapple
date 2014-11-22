@@ -1,0 +1,22 @@
+{
+  "name": "projectapple",
+  "version": "0.0.1",
+  "homepage": "https://github.com/eduardoramirez/projectapple",
+  "authors": [
+    "Eduardo Ramirez <eduardo@ucsd.edu>"
+  ],
+  "description": "Hack for intuit hackathon",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.3.1"
+  }
+}
