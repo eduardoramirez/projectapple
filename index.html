@@ -24,6 +24,7 @@
     </div>
     <div class="stats">
       <div class="luxury hoverable" data-variation="inverted" data-content="More of this point you have, more items you can buy with your allowance.">Luxury Point: <span id="luxury_pt"></span></div>
+      <div class="ui green button" id="reset"><i class="undo icon"></i>Reset</div>
       <div class="ui menu given">
         <span class="item hoverable" data-variation="inverted" data-content="The money you have earned.">Allowance:<span class="ui black label" id="allowance"></span></span>
         <span class="item hoverable" data-variation="inverted" data-content="The amount of time you are given to use allowance.">Time Period:<span class="ui black label" id="time"></span></span>
@@ -34,8 +35,8 @@
   </div>
   <h3 style="text-align: center;">Items you can buy:</h3>
   <div class="want"></div>
-  <div class="ui green button" id="total">Total</div>
-  <div class="ui disabled blue button" id="next">Another Round</div>
+  <div class="ui green button" id="total"><i class="cart icon"></i>Update Cart</div>
+  <div class="ui disabled blue button" id="next"><i class="play icon"></i>Continue</div>
   <div id="total_cost">$0.00</div>
   <br/><br/><br/>
   <script src="script.js"></script>
@@ -143,6 +144,9 @@
     });
 
     $('#next').click(function(){
+      if($(this).hasClass("disabled")){
+        return false;
+      }
       if((window.location).toString().indexOf('?') == -1){
         window.location.href = window.location + "?pt=" + luxury_pt.toString();
       }
@@ -152,6 +156,13 @@
       }
       //location.reload();
     });
+
+    $("#reset").click(function(){
+      if((window.location).toString().indexOf('?') != -1){
+        alert((window.location).toString().substring(0,address.indexOf('?')));
+        window.location.href = (window.location).toString().substring(0,address.indexOf('?'));
+      }
+    })
   </script>
 </body>
 </html>
