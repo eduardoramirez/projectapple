@@ -37,22 +37,17 @@
   <div class="ui green button" id="total">Total</div>
   <div class="ui disabled blue button" id="next">Another Round</div>
   <div id="total_cost">$0.00</div>
+  <br/><br/><br/>
   <script src="script.js"></script>
   <script>
-    var fb = new Firebase('https://spendwell.firebaseio.com');
     var data = [];
     var luxury_pt = 0;
-    var flag = false;
-
-    fb.on('child_added', function(lux){
-        luxury_pt = parseInt(lux.val());
-        flag = true
-    });
-
-    //while(!flag)
-      alert("after for: " + luxury_pt);
-
-    fb.remove();
+    var address = (window.location).toString();
+    var n = address.indexOf('?');
+    if(n != -1){
+      address = address.substring(n+1);
+      luxury_pt = parseInt(address.substring(address.search('=')+1));
+    }
 
     var total_spent = 0;
     var allowance = (Math.random() * 1000) + 10;
@@ -144,13 +139,18 @@
       if(total_spent > 0){
         $("#next").removeClass("disabled");
       }
-      luxury_pt = (data[1]*-10)+(data[2]*7);
+      luxury_pt += (data[1]*-10)+(data[2]*7);
     });
 
     $('#next').click(function(){
-
-      fb.push(luxury_pt);
-      location.reload();
+      if((window.location).toString().indexOf('?') == -1){
+        window.location.href = window.location + "?pt=" + luxury_pt.toString();
+      }
+      else {
+        address = (window.location).toString().substring(0,address.indexOf('?'));
+        window.location.href = address + "?pt=" + luxury_pt.toString();
+      }
+      //location.reload();
     });
   </script>
 </body>
