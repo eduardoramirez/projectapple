@@ -9,6 +9,7 @@
   <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <link rel="stylesheet" type="text/css" class="ui" href="packaged/css/semantic.min.css">
+  <script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script>
   <script src="packaged/javascript/semantic.min.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
@@ -34,6 +35,8 @@
   <div class="want"></div>
   <script src="script.js"></script>
   <script>
+    var fb = new Firebase('https://spendwell.firebaseio.com');
+
     var luxury_pt = 0;
     var allowance = (Math.random() * 1000) + 10;
     while(allowance > 1000){
@@ -68,22 +71,37 @@
 
     $('.hoverable').popup({ on: 'hover' });
 
-     function display(list){
-        var colOpen = '<div class="ui grid">';
-        var checkboxHeader = '<div class="five wide column" id="';
-        var checkboxOpen = '">'
-        +'<label><input class="ui huge checkbox right" type="checkbox">';
-        var checkboxClose = '</label>'
-        +'</div>';
-        var colClose = '</div>';
-        var innerColOpen = '<div class="one wide column">';
-        var innerColClose = '</div>';
-        for(var key in list){
-          var toInsert = colOpen + checkboxHeader + key + checkboxOpen + '<span class="spacetab">'+ key + '</span>' +
-          checkboxClose + innerColOpen + list[key] + innerColClose + colClose;
-          $('.want').append(toInsert);
-      }};
-      display(want);
+    function display(list){
+      var colOpen = '<div class="ui grid">';
+      var checkboxHeader = '<div class="five wide column">'
+                          +'<label><input class="ui huge checkbox" type="checkbox" id="'
+
+      var checkboxOpen = '">';
+      
+      var checkboxClose = '</label>'
+                        +'</div>';
+      var colClose = '</div>';
+      var innerColOpen = '<div class="one wide column">';
+      var innerColClose = '</div>';
+      for(var key in list){
+        var toInsert = colOpen + checkboxHeader + key + checkboxOpen + '<span class="spacetab">'+ key + '</span>' +
+        checkboxClose + innerColOpen + list[key] + innerColClose + colClose;
+        $('.want').append(toInsert);
+      }
+    };
+      
+    display(want);
+
+    function addTotal(list){
+      for(var key in list){
+        if($('#'+key).is(":checked")) {
+          total += list[key];
+        }
+      }
+      return total;
+    };
+
+
   </script>
 </body>
 </html>
