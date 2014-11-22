@@ -22,7 +22,7 @@ want = {
 "XBOX": 50.00,
 "SNES": 25.00,
 "Popsicle": 1.00,
-"Candy": .50,
+"Candy": .50,
 "FastFood": 5.00,
 "Chips": 1.50,
 "Soda": 2.50,
