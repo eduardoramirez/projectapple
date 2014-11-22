@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Standard Meta -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpendWell!</title>
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" class="ui" href="packaged/css/semantic.min.css">
+  <script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script>
+  <script src="packaged/javascript/semantic.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <div class="header mainHeader">
+    <h1>SpendWell!</h1>
+  </div>
+  <div class="content mainContent">
+    <div class="ui floating message direction">
+      <b>Direction:</b>
+      Budget accordingly using given allowance, time period, tax, and need task. Earn many luxury points as possible in order to win! But you will lose some if you don't buy your needs ...
+    </div>
+    <div class="stats">
+      <div class="luxury hoverable" data-variation="inverted" data-content="More of this point you have, more items you can buy with your allowance.">Luxury Point: <span id="luxury_pt"></span></div>
+      <div class="ui menu given">
+        <span class="item hoverable" data-variation="inverted" data-content="The money you have earned.">Allowance:<span class="ui black label" id="allowance"></span></span>
+        <span class="item hoverable" data-variation="inverted" data-content="The amount of time you are given to use allowance.">Time Period:<span class="ui black label" id="time"></span></span>
+        <span class="item hoverable" data-variation="inverted" data-content="The money that people are forced to pay to the government.">Tax:<span class="ui black label" id="tax"></span></span>
+        <span class="item hoverable" data-variation="inverted" data-content="The requirement that must meet to earn Luxury Point.">Task:<span class="ui black label" id="task">Buy 5 Food Items</span></span>
+      </div>
+    </div>
+  </div>
+  <h3 style="text-align: center;">Items you can buy:</h3>
+  <div class="want"></div>
+  <div class="ui green button" id="total">Total</div>
+  <div class="ui disabled blue button" id="next">Another Round</div>
+  <div id="total_cost">$0.00</div>
+  <br/><br/><br/>
+  <script src="script.js"></script>
+  <script>
+    var data = [];
+    var luxury_pt = 0;
+    var address = (window.location).toString();
+    var n = address.indexOf('?');
+    if(n != -1){
+      address = address.substring(n+1);
+      luxury_pt = parseInt(address.substring(address.search('=')+1));
+    }
+
+    var total_spent = 0;
+    var allowance = (Math.random() * 1000) + 10;
+    while(allowance > 1000){
+      allowance = (Math.random() * 1000) + 10;
+    }
+    var tax = ((Math.random() * 3) + 1)+5;
+    tax = tax/100;
+    var times = ['day(s)', 'week(s)', 'month(s)', 'year'];
+    var time = times[Math.floor(((Math.random() * 3) + 1))%4];
+    var time_num = 0;
+    switch(time) {
+      case 'day(s)': time_num = Math.floor((Math.random() * 5) + 1); break;
+      case 'week(s)': time_num = Math.floor((Math.random() * 4) + 1); break;
+      case 'month(s)': time_num = Math.floor((Math.random() * 11) + 1); break;
+      case 'year': time_num = 1; break;
+    }
+    document.getElementById("luxury_pt").innerHTML = luxury_pt;
+    document.getElementById("allowance").innerHTML = "$"+allowance.toFixed(2).toString();
+    document.getElementById("time").innerHTML = time_num.toString()+" "+time;
+    document.getElementById("tax").innerHTML = "$"+(allowance*tax).toFixed(2).toString();
+    if(luxury_pt < 0){
+      $("#luxury_pt").css('color','#D95C5C');
+    }
+    $('.label').mouseenter(function() {
+      $(this).removeClass('black');
+      $(this).addClass('green');
+    });
+    $('.label').mouseleave(function() {
+      $(this).removeClass('green');
+      $(this).addClass('black');
+    });
+
+    $('.hoverable').popup({ on: 'hover' });
+
+    function display(list, list2){
+      var colOpen = '<div class="ui grid">';
+      var checkboxHeader = '<div class="seven wide column">'
+                          +'<label><input class="ui huge checkbox" type="checkbox" id="'
+
+      var checkboxOpen = '">';
+      
+      var checkboxClose = '</label>'
+                        +'</div>';
+      var colClose = '</div>';
+      var innerColOpen = '<div class="one short column">';
+      var innerColClose = '</div>';
+      var label = '<span class="ui teal circular label">want</span>&nbsp;&nbsp;&nbsp;';
+      for(var key in list){
+        var toInsert = colOpen + checkboxHeader + key + checkboxOpen + '<span class="spacetab">'+ '<span class="ui blue circular label">want</span>&nbsp;&nbsp;&nbsp;' + key+ '</span>' +
+        checkboxClose + innerColOpen + "$"+list[key].toFixed(2).toString() + innerColClose + colClose;
+        $('.want').append(toInsert);
+      }
+
+      var label = '<span class="ui teal circular label">need</span>&nbsp;&nbsp;&nbsp;';
+      for(var key in list2){
+        var toInsert = colOpen + checkboxHeader + key + checkboxOpen + '<span class="spacetab">'+ '<span class="ui orange circular label">need</span>&nbsp;&nbsp;&nbsp;' + key+ '</span>' +
+        checkboxClose + innerColOpen + "$"+list2[key].toFixed(2).toString() + innerColClose + colClose;
+        $('.want').append(toInsert);
+      }
+    };
+      
+    display(want, need);
+
+    function addTotal(list, list2){
+      var total = 0;
+      var wants = 0;
+      var needs = 0;
+      for(var key in list){
+        if($('#'+key).is(':checked')) {
+          total += list[key];
+          wants += 1;
+        }
+      }
+
+      for(var key in list2){
+        if($('#'+key).is(':checked')) {
+          total += list2[key];
+          needs += 1;
+        }
+      }
+      return [total,wants,needs];
+    };
+
+    $("#total").click(function(){
+      data = addTotal(want, need);
+      total_spent = data[0]
+      document.getElementById("total_cost").innerHTML = "$"+total_spent.toFixed(2).toString();
+      if(total_spent > 0){
+        $("#next").removeClass("disabled");
+      }
+      luxury_pt += (data[1]*-10)+(data[2]*7);
+    });
+
+    $('#next').click(function(){
+      if((window.location).toString().indexOf('?') == -1){
+        window.location.href = window.location + "?pt=" + luxury_pt.toString();
+      }
+      else {
+        address = (window.location).toString().substring(0,address.indexOf('?'));
+        window.location.href = address + "?pt=" + luxury_pt.toString();
+      }
+      //location.reload();
+    });
+  </script>
+</body>
+</html>
