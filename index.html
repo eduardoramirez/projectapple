@@ -73,7 +73,7 @@
 
     $('.hoverable').popup({ on: 'hover' });
 
-    function display(list){
+    function display(list, list2){
       var colOpen = '<div class="ui grid">';
       var checkboxHeader = '<div class="seven wide column">'
                           +'<label><input class="ui huge checkbox" type="checkbox" id="'
@@ -91,22 +91,35 @@
         checkboxClose + innerColOpen + "$"+list[key].toFixed(2).toString() + innerColClose + colClose;
         $('.want').append(toInsert);
       }
+
+      var label = '<span class="ui teal circular label">need</span>&nbsp;&nbsp;&nbsp;';
+      for(var key in list2){
+        var toInsert = colOpen + checkboxHeader + key + checkboxOpen + '<span class="spacetab">'+ label + key+ '</span>' +
+        checkboxClose + innerColOpen + "$"+list2[key].toFixed(2).toString() + innerColClose + colClose;
+        $('.want').append(toInsert);
+      }
     };
       
-    display(want);
+    display(want, need);
 
-    function addTotal(list){
+    function addTotal(list, list2){
       var total = 0;
       for(var key in list){
         if($('#'+key).is(':checked')) {
           total += list[key];
         }
       }
+
+      for(var key in list2){
+        if($('#'+key).is(':checked')) {
+          total += list2[key];
+        }
+      }
       return total;
     };
 
     $("#total").click(function(){
-      alert(addTotal(want));
+      alert(addTotal(want, need));
     });
   </script>
 </body>
