@@ -22,45 +22,68 @@
       Budget accordingly using given allowance, time period, tax, and need task. Earn many luxury points as possible in order to win! But you will lose some if you don't buy your needs ...
     </div>
     <div class="stats">
-      <div class="luxury">Luxury Point: <span id="luxury_pt"></span></div>
-      <div class="given">
-      <a class="ui black label">Allowance</a><span id="allowance"></span>
-      <a class="ui black label">Time Period</a><span id="time"></span>
+      <div class="luxury hoverable" data-variation="inverted" data-content="More of this point you have, more items you can buy with your allowance.">Luxury Point: <span id="luxury_pt"></span></div>
+      <div class="ui menu given">
+        <span class="item hoverable" data-variation="inverted" data-content="The money you have earned.">Allowance:<span class="ui black label" id="allowance"></span></span>
+        <span class="item hoverable" data-variation="inverted" data-content="The amount of time you are given to use allowance.">Time Period:<span class="ui black label" id="time"></span></span>
+        <span class="item hoverable" data-variation="inverted" data-content="The money that people are forced to pay to the government.">Tax:<span class="ui black label" id="tax"></span></span>
+        <span class="item hoverable" data-variation="inverted" data-content="The requirement that must meet to earn Luxury Point.">Task:<span class="ui black label" id="task">Buy 5 Food Items</span></span>
+      </div>
     </div>
   </div>
-
+  <div class="want"></div>
   <script src="script.js"></script>
   <script>
-    var luxury_pt = 0
+    var luxury_pt = 0;
     var allowance = (Math.random() * 1000) + 10;
-    var times = ['DAY', 'WEEK', 'MONTH', 'YEAR'];
+    while(allowance > 1000){
+      allowance = (Math.random() * 1000) + 10;
+    }
+    var tax = ((Math.random() * 3) + 1)+5;
+    tax = tax/100;
+    var times = ['day(s)', 'week(s)', 'month(s)', 'year'];
+    var time = times[Math.floor(((Math.random() * 3) + 1))%4];
+    var time_num = 0;
+    switch(time) {
+      case 'day(s)': time_num = Math.floor((Math.random() * 5) + 1); break;
+      case 'week(s)': time_num = Math.floor((Math.random() * 4) + 1); break;
+      case 'month(s)': time_num = Math.floor((Math.random() * 11) + 1); break;
+      case 'year': time_num = 1; break;
+    }
     document.getElementById("luxury_pt").innerHTML = luxury_pt;
     document.getElementById("allowance").innerHTML = "$"+allowance.toFixed(2).toString();
-    document.getElementById("time").innerHTML = times[Math.floor(((Math.random() * 3) + 1))%4];
+    document.getElementById("time").innerHTML = time_num.toString()+" "+time;
+    document.getElementById("tax").innerHTML = "$"+(allowance*tax).toFixed(2).toString();
+    if(luxury_pt < 0){
+      $("#luxury_pt").css('color','#D95C5C');
+    }
+    $('.label').mouseenter(function() {
+      $(this).removeClass('black');
+      $(this).addClass('green');
+    });
+    $('.label').mouseleave(function() {
+      $(this).removeClass('green');
+      $(this).addClass('black');
+    });
 
+    $('.hoverable').popup({ on: 'hover' });
 
-    /*
-    $("#utils").click(function() {
-      $('#utilsSidebar').empty();
-      $('#utilsSidebar').append('<div class="header item">Necessities and Wants</div>');
-      addUtils();
-      $('#utilsSidebar').sidebar({
-        overlay: true
-      }).sidebar('toggle');
-    }); */
-
-
-    function addUtils() {
-      for(var i = 0; i < want.length; i++){
-        $('#utilsSidebar').append('<a class="item">' + want[i] + '</a>');
-      }
-      // some line
-
-      for(var i = 0; i < need.length; i++){
-        $('#utilsSidebar').append('<a class="item">' + need[i] + '</a>');
-      }
-    };
-
+     function display(list){
+        var colOpen = '<div class="ui grid">';
+        var checkboxHeader = '<div class="five wide column" id="';
+        var checkboxOpen = '">'
+        +'<label><input class="ui huge checkbox right" type="checkbox">';
+        var checkboxClose = '</label>'
+        +'</div>';
+        var colClose = '</div>';
+        var innerColOpen = '<div class="one wide column">';
+        var innerColClose = '</div>';
+        for(var key in list){
+          var toInsert = colOpen + checkboxHeader + key + checkboxOpen + '<span class="spacetab">'+ key + '</span>' +
+          checkboxClose + innerColOpen + list[key] + innerColClose + colClose;
+          $('.want').append(toInsert);
+      }};
+      display(want);
   </script>
 </body>
 </html>
