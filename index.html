@@ -24,7 +24,7 @@
     </div>
     <div class="stats">
       <div class="luxury hoverable" data-variation="inverted" data-content="Making wise decisions will earn you luxury points in which you
-can put towards your wants in the future. Plan ahead!">Luxury Point: <span id="luxury_pt"></span></div>
+can put towards your wants in the future. Plan ahead!"><span id="luxury_pt"></span> Luxury Point(s)</div>
       <div class="ui green button" id="reset"><i class="undo icon"></i>Reset Point</div>
       <div class="ui menu given">
         <span class="item hoverable" data-variation="inverted" data-content="The amount of somethign that is permitted, within a set of regulatoins
@@ -38,8 +38,8 @@ government uses to fund its activities and serve the public.">Income Tax:<span c
   </div>
   <h3 style="text-align: center;">Items you can buy:</h3>
   <div class="want"></div>
-  <div class="ui green button" id="total"><i class="cart icon"></i>Update Cart</div>
-  <div class="ui disabled blue button" id="next"><i class="play icon"></i>Continue</div>
+  <div class="ui green button hoverable" id="total" data-variation="inverted" data-content="Update Cart">&nbsp;&nbsp;&nbsp;<i class="cart icon"></i></div>
+  <div class="ui disabled blue button hoverable" id="next" data-variation="inverted" data-content="Continue">&nbsp;&nbsp;&nbsp;<i class="play icon"></i></div>
   <div id="total_cost">$0.00</div>
   <br/><br/>
   <footer>
@@ -124,7 +124,7 @@ government uses to fund its activities and serve the public.">Income Tax:<span c
       want_counter = Math.floor((Math.random() * luxury_pt/10) + 2);
       if(want_counter > 0){
         for(var key in list){
-          var index = Math.floor((Math.random() * Object.keys(list).length) + 0);
+          var index = Math.floor((Math.random() * 12) + 0);
           if(used.indexOf(index) == -1){
             used.push(index);
           }
@@ -147,7 +147,7 @@ government uses to fund its activities and serve the public.">Income Tax:<span c
       var label = '<span class="ui teal circular label">need</span>&nbsp;&nbsp;&nbsp;';
       used = [];
       for(var key in list2){
-        var index = Math.floor((Math.random() * Object.keys(list2).length) + 0);
+        var index = Math.floor((Math.random() * 12) + 0);
         if(used.indexOf(index) == -1){
           used.push(index);
         }
