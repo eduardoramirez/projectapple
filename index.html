@@ -229,8 +229,7 @@ government uses to fund its activities and serve the public.">Income Tax:<span c
       }
       if(optimal_lp > Math.floor(-(data[1]*.12)+(data[2]*.8)-(deduction/50))){
         alert("You did not meet the given task. Please try again!");
-        location.reload(); 
-        return false;
+        luxury_pt -= optimal_lp;
       }
       if((window.location).toString().indexOf('?') == -1){
         window.location.href = window.location + "?pt=" + luxury_pt.toString();
