@@ -10,7 +10,7 @@ need = {
 "Toiletries": 10.00,
 "Housing": 100.00,
 "Medicine":15.00,
-"SchoolSupplies": 5.00,
+"Supplies": 5.00,
 "Transportation": 2.50,
 "Juice": 1.00
 
