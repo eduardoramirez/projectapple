@@ -26,7 +26,7 @@ want = {
 "FastFood": 5.00,
 "Chips": 1.50,
 "Soda": 2.50,
-"Shoes": 150.00,
+"iPhone": 150.00,
 "Comics": 8.50,
 "Movies": 12.00
 };
